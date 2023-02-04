@@ -1,12 +1,13 @@
+use cosmwasm_schema::cw_serde;
 use serde::de::DeserializeOwned;
 use serde::Serialize;
-use cosmwasm_schema::cw_serde;
 
-use cosmwasm_std::{to_binary, Addr, Binary, BlockInfo, Deps, Env, Order, StdError, StdResult, CustomMsg};
+use cosmwasm_std::{
+    to_binary, Addr, Binary, BlockInfo, CustomMsg, Deps, Env, Order, StdError, StdResult,
+};
 
 use cw721::{
-    AllNftInfoResponse, ApprovalResponse, ApprovalsResponse, ContractInfoResponse,
-    Cw721Query, 
+    AllNftInfoResponse, ApprovalResponse, ApprovalsResponse, ContractInfoResponse, Cw721Query,
     Expiration, NftInfoResponse, NumTokensResponse, OperatorsResponse, OwnerOfResponse,
     TokensResponse,
 };
@@ -43,7 +44,7 @@ where
             extension: info.extension,
         })
     }
-    
+
     fn owner_of(
         &self,
         deps: Deps,
@@ -210,8 +211,6 @@ where
     }
 }
 
-
-
 #[cw_serde]
 pub struct AllTokensInfoResponse<T> {
     // Returned from QueryMsg::AllTokensInfo
@@ -232,14 +231,13 @@ pub trait AllTokensInfoExt<T> {
     ) -> StdResult<AllTokensInfoResponse<T>>;
 }
 
-impl<'a, T, C, E, Q> AllTokensInfoExt<T> for Cw721Contract<'a, T, C, E, Q> 
+impl<'a, T, C, E, Q> AllTokensInfoExt<T> for Cw721Contract<'a, T, C, E, Q>
 where
     Cw721Contract<'a, T, C, E, Q>: Cw721Query<T>,
     T: Serialize + DeserializeOwned + Clone,
     C: CustomMsg,
     E: CustomMsg,
     Q: CustomMsg,
-
 {
     fn all_tokens_info(
         &self,
@@ -265,14 +263,13 @@ where
         let owners_tokens_info: Vec<(String, T, Option<String>)> = owners_tokens
             .iter()
             .map(|token_id| -> StdResult<(String, T, Option<String>)> {
-                    let info = self.tokens.load(deps.storage, &token_id);
+                let info = self.tokens.load(deps.storage, &token_id);
 
-                    match info {
-                        Ok(x) => {return Ok((token_id.clone(), x.extension, x.token_uri))},
-                        Err(e) => {return Err(e)},
-                    }
+                match info {
+                    Ok(x) => return Ok((token_id.clone(), x.extension, x.token_uri)),
+                    Err(e) => return Err(e),
                 }
-            )
+            })
             .collect::<StdResult<Vec<_>>>()?;
 
         Ok(AllTokensInfoResponse {
@@ -355,9 +352,11 @@ where
                 to_binary(&self.approvals(deps, env, token_id, include_expired.unwrap_or(false))?)
             }
             QueryMsg::Extension { msg: _ } => Ok(Binary::default()),
-            QueryMsg::AllTokensInfo { owner_addr, start_after, limit } => {
-                to_binary(&self.all_tokens_info(deps, owner_addr, start_after, limit)?)
-            }
+            QueryMsg::AllTokensInfo {
+                owner_addr,
+                start_after,
+                limit,
+            } => to_binary(&self.all_tokens_info(deps, owner_addr, start_after, limit)?),
         }
     }
 }

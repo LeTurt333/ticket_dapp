@@ -11,12 +11,17 @@ pub struct InstantiateMsg {
 
 #[cw_serde]
 pub enum ExecuteMsg {
-
     ReceiveNft(Cw721ReceiveMsg),
 
-    InitTicketContract{code_id: u64, name: String, symbol: String},
+    InitTicketContract {
+        code_id: u64,
+        name: String,
+        symbol: String,
+    },
 
-    BuyTicket{package_option: u8},
+    BuyTicket {
+        package_option: u8,
+    },
 }
 
 #[cw_serde]
@@ -24,13 +29,11 @@ pub enum ReceiveNftMsg {
     UseTicket {},
 }
 
-
 #[cw_serde]
 #[derive(QueryResponses)]
 pub enum QueryMsg {
     #[returns(UserStatusResponse)]
-    GetUserStatus {user_address: String}
-
+    GetUserStatus { user_address: String },
 }
 
 #[cw_serde]

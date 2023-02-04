@@ -13,6 +13,5 @@ pub enum ContractError {
     InvalidPayment {},
 
     #[error("User has already used a ticket")]
-    AlreadyUsed {}
-
+    AlreadyUsed {},
 }

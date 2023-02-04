@@ -7,7 +7,7 @@ use cw721::{
     AllNftInfoResponse, ApprovalResponse, ApprovalsResponse, ContractInfoResponse, NftInfoResponse,
     NumTokensResponse, OperatorsResponse, OwnerOfResponse, TokensResponse,
 };
-use ticket_nft::{ExecuteMsg, TicketNftExtension, InstantiateMsg, MinterResponse, QueryMsg};
+use ticket_nft::{ExecuteMsg, InstantiateMsg, MinterResponse, QueryMsg, TicketNftExtension};
 
 fn main() {
     let mut out_dir = current_dir().unwrap();

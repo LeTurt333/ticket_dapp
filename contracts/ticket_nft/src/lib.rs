@@ -38,13 +38,28 @@ pub trait CreateTicketMetadata {
 
 impl CreateTicketMetadata for TicketNftExtension {
     fn create(package_option: u8, owner: String) -> TicketNftExtension {
-
-        let owner_trait = Trait {display_type: None, trait_type: "Ticket Holder".to_string(), value: owner};
+        let owner_trait = Trait {
+            display_type: None,
+            trait_type: "Ticket Holder".to_string(),
+            value: owner,
+        };
 
         let package_trait = match package_option {
-            2 => Trait {display_type: None, trait_type: "Package".to_string(), value: "VIP Admission".to_string()},
-            3 => Trait {display_type: None, trait_type: "Package".to_string(), value: "Ultra VIP Admission".to_string()},
-            _ => Trait {display_type: None, trait_type: "Package".to_string(), value: "General Admission".to_string()},
+            2 => Trait {
+                display_type: None,
+                trait_type: "Package".to_string(),
+                value: "VIP Admission".to_string(),
+            },
+            3 => Trait {
+                display_type: None,
+                trait_type: "Package".to_string(),
+                value: "Ultra VIP Admission".to_string(),
+            },
+            _ => Trait {
+                display_type: None,
+                trait_type: "Package".to_string(),
+                value: "General Admission".to_string(),
+            },
         };
 
         return Some(Metadata {
@@ -52,11 +67,11 @@ impl CreateTicketMetadata for TicketNftExtension {
             attributes: Some(vec![owner_trait, package_trait]),
             ..Metadata::default()
         });
-
     }
 }
 
-pub type Cw721MetadataContract<'a> = cw721_base::Cw721Contract<'a, TicketNftExtension, Empty, Empty, Empty>;
+pub type Cw721MetadataContract<'a> =
+    cw721_base::Cw721Contract<'a, TicketNftExtension, Empty, Empty, Empty>;
 pub type ExecuteMsg = cw721_base::ExecuteMsg<TicketNftExtension, Empty>;
 pub type QueryMsg = cw721_base::QueryMsg<Empty>;
 
@@ -75,7 +90,6 @@ pub mod entry {
         info: MessageInfo,
         msg: InstantiateMsg,
     ) -> Result<Response, ContractError> {
-
         let res = Cw721MetadataContract::default().instantiate(deps.branch(), env, info, msg)?;
 
         // Explicitly set contract name and version, otherwise set to cw721-base info

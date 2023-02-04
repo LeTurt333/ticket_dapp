@@ -1,7 +1,9 @@
 use serde::de::DeserializeOwned;
 use serde::Serialize;
 
-use cosmwasm_std::{Binary, Deps, DepsMut, Env, MessageInfo, Response, StdResult, to_binary, CustomMsg};
+use cosmwasm_std::{
+    to_binary, Binary, CustomMsg, Deps, DepsMut, Env, MessageInfo, Response, StdResult,
+};
 
 use cw2::set_contract_version;
 use cw721::{ContractInfoResponse, Cw721Execute, Cw721ReceiveMsg, Expiration};

@@ -1,8 +1,6 @@
-use cosmwasm_std::{Addr};
-use cw_storage_plus::{
-    Item, UniqueIndex, IndexList, Index, IndexedMap
-};
 use cosmwasm_schema::cw_serde;
+use cosmwasm_std::Addr;
+use cw_storage_plus::{Index, IndexList, IndexedMap, Item, UniqueIndex};
 
 ////////////////////////////////////////////////////////////////////////////
 
@@ -16,11 +14,10 @@ pub struct Configuration {
     pub ticket_nft_addr: Option<Addr>,
 }
 
-
 #[cw_serde]
 pub struct TicketInfo {
     pub ticket_id: String,
-    pub block_used: u64
+    pub block_used: u64,
 }
 
 pub struct UsedTicketIndexes<'a> {
@@ -29,9 +26,7 @@ pub struct UsedTicketIndexes<'a> {
 
 impl IndexList<TicketInfo> for UsedTicketIndexes<'_> {
     fn get_indexes(&'_ self) -> Box<dyn Iterator<Item = &'_ dyn Index<TicketInfo>> + '_> {
-        let v: Vec<&dyn Index<TicketInfo>> = vec![
-            &self.ticket_id,
-        ];
+        let v: Vec<&dyn Index<TicketInfo>> = vec![&self.ticket_id];
         Box::new(v.into_iter())
     }
 }
@@ -43,10 +38,3 @@ pub fn used_tickets<'a>() -> IndexedMap<'a, (&'a Addr, String), TicketInfo, Used
 
     IndexedMap::new("used_tickets_im", indexes)
 }
-
-
-
-
-
-
-
