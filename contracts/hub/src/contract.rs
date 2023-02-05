@@ -211,7 +211,7 @@ pub fn execute_receive_nft(
             .prefix(&user_wallet)
             .range(deps.storage, None, None, Order::Ascending)
             .collect();
-        used_tickets.is_err() || used_tickets.unwrap().len() > 1
+        used_tickets.is_err() || used_tickets.unwrap().len() >= 1
     } {
         return Err(ContractError::AlreadyUsed {});
     }
